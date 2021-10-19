@@ -1,11 +1,36 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"ssm-learn-go/structs"
+	"os"
+	"ssm-learn-go/utils"
+	"strings"
 )
 
 func main() {
-	me := structs.Student{Name: "Shawn", Gender: "M"}
-	fmt.Println(me.Name, me.Gender)
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("Student Score Manager")
+	fmt.Println("---------------------------------------")
+
+	for {
+		fmt.Print("-> ")
+		text, _ := reader.ReadString('\n')
+		text = strings.Replace(text, "\n", "", -1)
+
+		switch text {
+		case "insert":
+			utils.InsertStudent()
+		case "delete":
+			utils.DeleteStudent()
+		case "modify":
+			utils.ModifyStudent()
+		case "search":
+			utils.SearchStudent()
+		case "list":
+			utils.ListStudent()
+		default:
+			fmt.Println("invalid command, try again")
+		}
+	}
 }
