@@ -1,7 +1,18 @@
 package utils
 
-import "fmt"
+import (
+	"fmt"
+	"ssm-learn-go/structs"
+)
 
-func ListStudent() {
-	fmt.Println("List a student")
+func ListStudent(linkedList *structs.Node) {
+	point := linkedList
+	for true {
+		if point == nil {
+			break
+		} else {
+			fmt.Println(point.Student.Name, point.Student.Gender)
+		}
+		point = point.NextNode
+	}
 }

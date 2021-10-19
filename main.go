@@ -4,14 +4,21 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"ssm-learn-go/structs"
 	"ssm-learn-go/utils"
 	"strings"
 )
+
+
+var linkedList structs.Node
+
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Student Score Manager")
 	fmt.Println("---------------------------------------")
+
+	linkedList = structs.Node{}
 
 	for {
 		fmt.Print("-> ")
@@ -20,7 +27,7 @@ func main() {
 
 		switch text {
 		case "insert":
-			utils.InsertStudent()
+			utils.InsertStudent(&linkedList)
 		case "delete":
 			utils.DeleteStudent()
 		case "modify":
@@ -28,7 +35,7 @@ func main() {
 		case "search":
 			utils.SearchStudent()
 		case "list":
-			utils.ListStudent()
+			utils.ListStudent(&linkedList)
 		default:
 			fmt.Println("invalid command, try again")
 		}
