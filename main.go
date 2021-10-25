@@ -9,9 +9,7 @@ import (
 	"strings"
 )
 
-
 var linkedList structs.Node
-
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
@@ -26,6 +24,11 @@ func main() {
 		text = strings.Replace(text, "\n", "", -1)
 
 		switch text {
+		case "init":
+			for i := 0; i < 20; i++ {
+				utils.InsertStudent(&linkedList)
+			}
+			utils.ListStudent(&linkedList)
 		case "insert":
 			utils.InsertStudent(&linkedList)
 		case "delete":
@@ -33,7 +36,7 @@ func main() {
 		case "modify":
 			utils.ModifyStudent()
 		case "search":
-			utils.SearchStudent()
+			utils.SearchStudent(&linkedList)
 		case "list":
 			utils.ListStudent(&linkedList)
 		case "quit":
