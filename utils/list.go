@@ -11,7 +11,7 @@ func ListStudent(linkedList *structs.Node) {
 		if point == nil {
 			break
 		} else {
-			fmt.Println(point.Student.Name, point.Student.Gender)
+			fmt.Println(point.Student)
 		}
 		point = point.NextNode
 	}

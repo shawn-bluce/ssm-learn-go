@@ -36,6 +36,10 @@ func main() {
 			utils.SearchStudent()
 		case "list":
 			utils.ListStudent(&linkedList)
+		case "quit":
+			os.Exit(0)
+		case "exit":
+			os.Exit(0)
 		default:
 			fmt.Println("invalid command, try again")
 		}
