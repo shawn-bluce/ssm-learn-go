@@ -32,7 +32,7 @@ func main() {
 		case "insert":
 			utils.InsertStudent(&linkedList)
 		case "delete":
-			utils.DeleteStudent()
+			utils.DeleteStudent(&linkedList)
 		case "modify":
 			utils.ModifyStudent()
 		case "search":
