@@ -4,19 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"ssm-learn-go/structs"
 	"ssm-learn-go/utils"
 	"strings"
 )
-
-var linkedList structs.Node
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Student Score Manager")
 	fmt.Println("---------------------------------------")
-
-	linkedList = structs.Node{}
 
 	for {
 		fmt.Print("-> ")
@@ -26,22 +21,30 @@ func main() {
 		switch text {
 		case "init":
 			for i := 0; i < 20; i++ {
-				utils.InsertStudent(&linkedList)
+				utils.InsertStudent()
 			}
-			utils.ListStudent(&linkedList)
+			utils.ListStudent()
 		case "insert":
-			utils.InsertStudent(&linkedList)
+			utils.InsertStudent()
 		case "delete":
-			utils.DeleteStudent(&linkedList)
+			utils.DeleteStudent()
 		case "modify":
 			utils.ModifyStudent()
 		case "search":
-			utils.SearchStudent(&linkedList)
+			utils.SearchStudent()
 		case "list":
-			utils.ListStudent(&linkedList)
+			utils.ListStudent()
 		case "quit":
+			err := utils.GetDbConnection().Close()
+			if err != nil {
+				return
+			}
 			os.Exit(0)
 		case "exit":
+			err := utils.GetDbConnection().Close()
+			if err != nil {
+				return
+			}
 			os.Exit(0)
 		default:
 			fmt.Println("invalid command, try again")

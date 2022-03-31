@@ -20,3 +20,7 @@
 .idea
 .idea/
 outputs
+
+/docker/db_config
+/docker/db_data
+/docker/db_data/*
