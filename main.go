@@ -1,53 +1,49 @@
 package main
 
 import (
-	"bufio"
+	"encoding/json"
 	"fmt"
-	"os"
+	"net/http"
+	"regexp"
 	"ssm-learn-go/utils"
-	"strings"
 )
 
+func handleStudentList(httpResponse http.ResponseWriter, httpRequest *http.Request) {
+	fmt.Fprintf(httpResponse, httpRequest.URL.RawQuery)
+}
+
+func handleStudentSingle(httpResponse http.ResponseWriter, httpRequest *http.Request) {
+	studentId := regexp.MustCompile("[0-9]+").FindAllString(httpRequest.URL.Path, -1)[0]
+	student := utils.GetStudent(studentId)
+	res, _ := json.Marshal(student)
+	if student.Id > 0 {
+		httpResponse.WriteHeader(200)
+	} else {
+		httpResponse.WriteHeader(404)
+	}
+	httpResponse.Header().Set("content-type", "application/json")
+	httpResponse.Write(res)
+}
+
+func router(httpResponse http.ResponseWriter, httpRequest *http.Request) {
+	studentList := regexp.MustCompile(`^/student/\??`)
+	studentSingle := regexp.MustCompile(`^/student/\d+/$`)
+
+	switch {
+	case studentSingle.MatchString(httpRequest.URL.Path):
+		handleStudentSingle(httpResponse, httpRequest)
+	case studentList.MatchString(httpRequest.URL.Path):
+		handleStudentList(httpResponse, httpRequest)
+	default:
+		fmt.Println("do not case")
+	}
+}
+
 func main() {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Student Score Manager")
-	fmt.Println("---------------------------------------")
+	http.HandleFunc("/", router)
 
-	for {
-		fmt.Print("-> ")
-		text, _ := reader.ReadString('\n')
-		text = strings.Replace(text, "\n", "", -1)
-
-		switch text {
-		case "init":
-			for i := 0; i < 20; i++ {
-				utils.InsertStudent()
-			}
-			utils.ListStudent()
-		case "insert":
-			utils.InsertStudent()
-		case "delete":
-			utils.DeleteStudent()
-		case "modify":
-			utils.ModifyStudent()
-		case "search":
-			utils.SearchStudent()
-		case "list":
-			utils.ListStudent()
-		case "quit":
-			err := utils.GetDbConnection().Close()
-			if err != nil {
-				return
-			}
-			os.Exit(0)
-		case "exit":
-			err := utils.GetDbConnection().Close()
-			if err != nil {
-				return
-			}
-			os.Exit(0)
-		default:
-			fmt.Println("invalid command, try again")
-		}
+	err := http.ListenAndServe(":5050", nil)
+	if err != nil {
+		return
 	}
 }
